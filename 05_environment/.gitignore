@@ -1,0 +1,11 @@
+memo.txt
+.env
+
+# PHP
+vendor
+
+# JS
+node_modules
+
+
+
