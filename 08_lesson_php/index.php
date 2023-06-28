@@ -1,6 +1,6 @@
 <?php
 // ***********************************
-// perfect shuffle
+// 燃費
 // ***********************************
 
 $input_arr = [];
@@ -15,34 +15,36 @@ $input_arr = file($file, FILE_IGNORE_NEW_LINES);
 // $input_arr[] = $line;
 // }
 
-$shuffle_num = $input_arr[0];
+$departure_len = $input_arr[0]; //発進距離
+[$initial_fuel, $general_fuel] = explode(' ', $input_arr[1]); //燃費
+[$total_len, $stop_num] = explode(' ', $input_arr[2]); //総距離、停車回数
+$stop_positions = explode(' ', $input_arr[3]); //停止位置
 
-$cards = [];
-$elements = array('S', 'H', 'D', 'C');
-$numbers = range(1, 13);
+$total_fuel = 0;
+$current_pos = 0;
 
-foreach ($elements as $element) {
-  foreach ($numbers as $number) {
-    $card = $element . '_' . $number;
-    $cards[] = $card;
+// 停止位置までの移動処理
+foreach ($stop_positions as $stop_pos) {
+  $move_len = $stop_pos - $current_pos;
+  if ($move_len < $departure_len) {
+    $total_fuel += $initial_fuel * $move_len;
+  } else {
+    $total_fuel +=
+      ($initial_fuel * $departure_len) +
+      ($general_fuel * ($move_len - $departure_len));
   }
+  $current_pos += $move_len;
 }
 
-$current_cards = $cards;
-$above_cards = [];
-$bottom_cards = [];
-
-for ($i = 0; $i < $shuffle_num; $i++) {
-
-  $new_cards = [];
-  for ($j = 0; $j < count($current_cards) / 2; $j ++) {
-    $new_cards[] = $current_cards[$j];
-    $new_cards[] = $current_cards[26 + $j];
-  }
-
-  $current_cards = $new_cards;
+// 目的地までの最後の処理
+$move_len = $total_len - $current_pos;
+if ($move_len < $departure_len) {
+  $total_fuel += $initial_fuel * $move_len;
+} else {
+  $total_fuel +=
+    ($initial_fuel * $departure_len) +
+    ($general_fuel * ($move_len - $departure_len));
 }
 
-foreach ($current_cards as $card) {
-  echo $card . PHP_EOL;
-}
+//出力処理
+echo $total_fuel . PHP_EOL;
