@@ -1,11 +1,11 @@
 <?php
 // ***********************************
-// 燃費
+// BINGO
 // ***********************************
 
 $input_arr = [];
 
-//テスト用
+// //テスト用
 $file = dirname(__FILE__) . '/input.txt';
 $input_arr = file($file, FILE_IGNORE_NEW_LINES);
 
@@ -15,36 +15,69 @@ $input_arr = file($file, FILE_IGNORE_NEW_LINES);
 // $input_arr[] = $line;
 // }
 
-$departure_len = $input_arr[0]; //発進距離
-[$initial_fuel, $general_fuel] = explode(' ', $input_arr[1]); //燃費
-[$total_len, $stop_num] = explode(' ', $input_arr[2]); //総距離、停車回数
-$stop_positions = explode(' ', $input_arr[3]); //停止位置
 
-$total_fuel = 0;
-$current_pos = 0;
+$aList = explode(" ", trim($input_arr[0]));
+$bList = explode(" ", trim($input_arr[1]));
 
-// 停止位置までの移動処理
-foreach ($stop_positions as $stop_pos) {
-  $move_len = $stop_pos - $current_pos;
-  if ($move_len < $departure_len) {
-    $total_fuel += $initial_fuel * $move_len;
-  } else {
-    $total_fuel +=
-      ($initial_fuel * $departure_len) +
-      ($general_fuel * ($move_len - $departure_len));
-  }
-  $current_pos += $move_len;
+// print_r($aList);
+// print_r($bList);
+
+$found = true;
+foreach ($bList as $num) {
+
+  if (!in_array($num, $aList)) {
+    $found = false;
+    break;
+  } 
 }
 
-// 目的地までの最後の処理
-$move_len = $total_len - $current_pos;
-if ($move_len < $departure_len) {
-  $total_fuel += $initial_fuel * $move_len;
+if ($found) {
+  echo "Yes";
 } else {
-  $total_fuel +=
-    ($initial_fuel * $departure_len) +
-    ($general_fuel * ($move_len - $departure_len));
+  echo "No";
 }
 
-//出力処理
-echo $total_fuel . PHP_EOL;
+
+// $bingo = array();
+// for ($i = 0; $i < 3; $i++) {
+//   $bingo[] = str_split($input_arr[$i]);
+// }
+// $bingo_line = 0;
+
+// // 横ビンゴ
+// $bingo_line += ($bingo[0][0] == '#' && $bingo[0][0] == $bingo[0][1] && $bingo[0][1] == $bingo[0][2]) ? 1 : 0;
+// $bingo_line += ($bingo[1][0] == '#' && $bingo[1][0] == $bingo[1][1] && $bingo[1][1] == $bingo[1][2]) ? 1 : 0;
+// $bingo_line += ($bingo[2][0] == '#' && $bingo[2][0] == $bingo[2][1] && $bingo[2][1] == $bingo[2][2]) ? 1 : 0;
+
+// // 縦ビンゴ
+// $bingo_line += ($bingo[0][0] == '#' && $bingo[0][0] == $bingo[1][0] && $bingo[1][0] == $bingo[2][0]) ? 1 : 0;
+// $bingo_line += ($bingo[0][1] == '#' && $bingo[0][1] == $bingo[1][1] && $bingo[1][1] == $bingo[2][1]) ? 1 : 0;
+// $bingo_line += ($bingo[0][2] == '#' && $bingo[0][2] == $bingo[1][2] && $bingo[1][2] == $bingo[2][2]) ? 1 : 0;
+
+// // 斜めビンゴ
+// $bingo_line += ($bingo[0][0] == '#' && $bingo[0][0] == $bingo[1][1] && $bingo[1][1] == $bingo[2][2]) ? 1 : 0;
+// $bingo_line += ($bingo[0][2] == '#' && $bingo[0][2] == $bingo[1][1] && $bingo[1][1] == $bingo[2][0]) ? 1 : 0;
+
+// echo $bingo_line;
+
+
+// $n = intval($input_arr[0]);
+// $S = $input_arr[1];
+// $T = $input_arr[2];
+// $S_array = str_split($S);
+// $T_array = str_split($T);
+// $is_bool = true;
+
+
+// for ($i=0; $i < $n; $i++) { 
+//   if(strpos($S,$T[$i]) === false){
+//     $is_bool = false;
+//     break ;
+//   }
+// }
+
+// if ($is_bool) {
+//     echo "Yes";
+// } else {
+//     echo "No";
+// }
