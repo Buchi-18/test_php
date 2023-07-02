@@ -1,6 +1,6 @@
 <?php
 // ***********************************
-// BINGO
+// 位置情報
 // ***********************************
 
 $input_arr = [];
@@ -15,69 +15,32 @@ $input_arr = file($file, FILE_IGNORE_NEW_LINES);
 // $input_arr[] = $line;
 // }
 
-
-$aList = explode(" ", trim($input_arr[0]));
-$bList = explode(" ", trim($input_arr[1]));
-
-// print_r($aList);
-// print_r($bList);
-
-$found = true;
-foreach ($bList as $num) {
-
-  if (!in_array($num, $aList)) {
-    $found = false;
-    break;
-  } 
+$loop_num = $input_arr[0];
+$pos_arr = [];
+for ($i = 1; $i <= $loop_num; $i++) {
+  $pos_arr[] = explode(' ', $input_arr[$i]);
 }
 
-if ($found) {
-  echo "Yes";
-} else {
-  echo "No";
+for ($i = 0; $i < count($pos_arr) - 1; $i++) {
+  $difference = abs($pos_arr[$i][0] - $pos_arr[$i + 1][0]);
+  $current_y = trim($pos_arr[$i][1]);
+  $current_x = trim($pos_arr[$i][2]);
+  $next_y = trim($pos_arr[$i + 1][1]);
+  $next_x = trim($pos_arr[$i + 1][2]);
+  $y_diff = abs($current_y - $next_y);
+  $x_diff = abs($current_x - $next_x);
+  $dy = ($current_y > $next_y) ? -1 : 1;
+  $dx = ($current_x > $next_x) ? -1 : 1;
+  $cell_y = $y_diff / $difference * $dy;
+  $cell_x = $x_diff / $difference * $dx;
+  for ($j = 0; $j < $difference; $j++) {
+    echo $current_y . ' ' . $current_x . PHP_EOL;
+    $current_y = intval($current_y + $cell_y);
+    $current_x = intval($current_x + $cell_x);
+  }
 }
 
+$end_y = trim(end($pos_arr)[1]);
+$end_x = trim(end($pos_arr)[2]);
+echo $end_y . ' ' . $end_x . PHP_EOL;
 
-// $bingo = array();
-// for ($i = 0; $i < 3; $i++) {
-//   $bingo[] = str_split($input_arr[$i]);
-// }
-// $bingo_line = 0;
-
-// // 横ビンゴ
-// $bingo_line += ($bingo[0][0] == '#' && $bingo[0][0] == $bingo[0][1] && $bingo[0][1] == $bingo[0][2]) ? 1 : 0;
-// $bingo_line += ($bingo[1][0] == '#' && $bingo[1][0] == $bingo[1][1] && $bingo[1][1] == $bingo[1][2]) ? 1 : 0;
-// $bingo_line += ($bingo[2][0] == '#' && $bingo[2][0] == $bingo[2][1] && $bingo[2][1] == $bingo[2][2]) ? 1 : 0;
-
-// // 縦ビンゴ
-// $bingo_line += ($bingo[0][0] == '#' && $bingo[0][0] == $bingo[1][0] && $bingo[1][0] == $bingo[2][0]) ? 1 : 0;
-// $bingo_line += ($bingo[0][1] == '#' && $bingo[0][1] == $bingo[1][1] && $bingo[1][1] == $bingo[2][1]) ? 1 : 0;
-// $bingo_line += ($bingo[0][2] == '#' && $bingo[0][2] == $bingo[1][2] && $bingo[1][2] == $bingo[2][2]) ? 1 : 0;
-
-// // 斜めビンゴ
-// $bingo_line += ($bingo[0][0] == '#' && $bingo[0][0] == $bingo[1][1] && $bingo[1][1] == $bingo[2][2]) ? 1 : 0;
-// $bingo_line += ($bingo[0][2] == '#' && $bingo[0][2] == $bingo[1][1] && $bingo[1][1] == $bingo[2][0]) ? 1 : 0;
-
-// echo $bingo_line;
-
-
-// $n = intval($input_arr[0]);
-// $S = $input_arr[1];
-// $T = $input_arr[2];
-// $S_array = str_split($S);
-// $T_array = str_split($T);
-// $is_bool = true;
-
-
-// for ($i=0; $i < $n; $i++) { 
-//   if(strpos($S,$T[$i]) === false){
-//     $is_bool = false;
-//     break ;
-//   }
-// }
-
-// if ($is_bool) {
-//     echo "Yes";
-// } else {
-//     echo "No";
-// }
